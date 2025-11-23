@@ -177,7 +177,7 @@ RISC-V RVV：向量寄存器与通用寄存器统一，向量指令需显式指�
 
 **数据选择：**
 
-基于 OpenCV 官方源码中针对 ARM NEON 的手工实现，手工剔除所有未被真正使用的文件，最终获得 21 个实际使用的核心算子。具体的算子数据见[算子列表](./data/operators.txt)。
+基于 OpenCV 官方源码中针对 ARM NEON 的手工实现，手工剔除所有未被真正使用的文件，最终获得 21 个实际使用的核心算子。具体的算子数据见[算子数据](./data/operators.jsonl)。
 
 
 
@@ -202,7 +202,7 @@ RISC-V RVV：向量寄存器与通用寄存器统一，向量指令需显式指�
 
 **数据选择：**
 
-选取自 OpenCV 官方 samples 示例集合的14个应用，具体选取标准和应用见[应用列表](./data/applications.md)。
+选取自 OpenCV 官方 samples 示例集合的14个应用，具体选取标准和应用见[应用数据](./data/applications.jsonl)。
 
 
 ##### 🔴 Level 3: 库级测试 (Library Level)
@@ -240,7 +240,7 @@ RISC-V RVV：向量寄存器与通用寄存器统一，向量指令需显式指�
 基于上述设计，我们提供了丰富的测试用例集，涵盖从基础算子到复杂模型场景的全面评估。
 
 #### 1. 算子级题目 (Operator Cases)
-数据集包含 **21 个 OpenCV核心算子**，旨在覆盖推理关键路径并验证 RVV 向量化加速效果，详见 [算子级题目](data/operators_level/NCNN_operator_README.md)。主要覆盖：
+数据集包含 **21 个 OpenCV核心算子**，旨在覆盖推理关键路径并验证 RVV 向量化加速效果，详见 [算子级题目](./data/operators.jsonl)。主要覆盖：
 
 - 常见图像处理操作（如 blur、sobel、resize 等）
 - SIMD 强相关的算术与逻辑处理（add、absdiff、bitwise 等）
@@ -254,17 +254,17 @@ RISC-V RVV：向量寄存器与通用寄存器统一，向量指令需显式指�
 
 
 #### 2. 应用级题目 (Model Cases)
-Level 2 包含 14 个来自 OpenCV 官方 samples 的典型图像处理应用。每个案例涉及多个算子，要求 Agent 能够识别算子依赖 → 迁移 NEON 实现 → 组合调用 → 完整构建 → 运行效果验证。具体题目见
+Level 2 包含 14 个来自 OpenCV 官方 samples 的典型图像处理应用。每个案例涉及多个算子，要求 Agent 能够识别算子依赖 → 迁移 NEON 实现 → 组合调用 → 完整构建 → 运行效果验证。具体题目见[应用级题目](./data/applications.jsonl)
 
 
 ---
 
 ### 📊 基准测试结果 (SoTA Results)
 
-为了深入分析智能体在不同类型算子上的表现，我们提供了核心算子的逐项评测结果，详细文件见 [算子级评测数据](design/sota_llm_result.csv)。
+为了深入分析智能体在不同类型算子上的表现，我们提供了核心算子的逐项评测结果。
 
 <details>
-<summary>🔻 点击查看详细算子通过情况 (Click to expand)</summary>
+<summary>🔻 点击查看OpenHands详细算子通过情况 (Click to expand)</summary>
 
 | Operator | OpenHands(GPT-5) | OpenHands(gemini-3-pro-preview) | OpenHands(qwen3-coder-480b-a35b-instruct) | OpenHands(gpt-4o)|
 |:---|:---:|:---:|:---:|:---:|
@@ -289,6 +289,64 @@ Level 2 包含 14 个来自 OpenCV 官方 samples 的典型图像处理应用。
 | `resize` | ❌ | ❌ | ❌ | ❌ |
 | `pyramid` | ❌ | ❌ | ❌ | ❌ |
 | `gaussian_blur` | ❌ | ❌ | ❌ | ❌ |
+
+</details>
+
+<details>
+<summary>🔻 点击查看JoyCode详细算子通过情况 (Click to expand)</summary>
+
+| Operator | JoyCode(claude-sonnet-4-5-20250929) | JoyCode(gemini-3-pro-preview) | JoyCode(Kimi-K2-0905) |
+|:---|:---:|:---:|:---:|
+| `bitwise` | ✅ | ✅ | ✅ |
+| `min_max` | ✅ | ❌ | ✅ |
+| `median_filter` | ❌ | ❌ | ✅ |
+| `sum` | ❌ | ❌ | ❌ |
+| `dot_product` | ❌ | ❌ | ❌ |
+| `blur` | ❌ | ❌ | ❌ |
+| `separable_filter` | ✅ | ❌ | ❌ |
+| `morph` | ❌ | ❌ | ❌ |
+| `sobel` | ✅ | ❌ | ❌ |
+| `absdiff` | ❌ |❌  | ❌ |
+| `add` | ❌ | ❌ | ❌ |
+| `add_weighted` | ❌ |  ❌| ❌ |
+| `cmp` | ❌ | ❌ | ❌ |
+| `mul` | ❌ | ❌ | ❌ |
+| `sub` |❌  | ❌ | ❌ |
+| `div` | ❌ | ❌ | ❌ |
+| `colorconvert` | ❌ | ❌ | ❌ |
+| `convolution` | ✅ | ❌ | ❌ |
+| `resize` | ❌ | ❌ | ❌ |
+| `pyramid` | ❌ | ❌ | ❌ |
+| `gaussian_blur` | ❌ | ❌ | ❌ |
+
+</details>
+
+<details>
+<summary>🔻 点击查看TRAE详细算子通过情况 (Click to expand)</summary>
+
+| Operator | TRAE(Doubao-seed-code) | TRAE(deepseek-v3.1) | TRAE(GLM-4.6) |
+|:---|:---:|:---:|:---:|
+| `bitwise` | ✅ | ❌ | ❌ |
+| `min_max` | ❌ | ❌ | ❌ |
+| `median_filter` | ✅ | ❌ | ❌ |
+| `sum` | ❌ | ❌ | ❌ |
+| `dot_product` | ❌ | ❌ | ❌ |
+| `blur` | ❌ | ✅ | ❌ |
+| `separable_filter` | ❌ | ❌ | ❌ |
+| `morph` | ❌ | ✅ | ❌ |
+| `sobel` | ✅ | ❌ | ❌ |
+| `absdiff` | ✅ |❌  | ❌ |
+| `add` | ✅ | ❌ | ❌ |
+| `add_weighted` | ❌ |  ❌| ❌ |
+| `cmp` | ✅ | ❌ | ❌ |
+| `mul` | ❌ | ❌ | ❌ |
+| `sub` |✅  | ❌ | ❌ |
+| `div` | ❌ | ❌ | ❌ |
+| `colorconvert` | ❌ | ❌ | ❌ |
+| `convolution` | ❌ | ✅ | ❌ |
+| `resize` | ✅ | ❌ | ❌ |
+| `pyramid` | ❌ | ❌ | ❌ |
+| `gaussian_blur` | ❌ | ❌ | ❌ |
 
 </details>
 
