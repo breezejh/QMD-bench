@@ -118,16 +118,16 @@ RISC-V RVV：向量寄存器与通用寄存器统一，向量指令需显式指�
 
 ##### 📊 综合对比表 (Comparison Table)
 
-| benchmark |  粒度 | 代码行数 | 依赖数 | 数据集规模 | 语言 | 正确性 | 性能 | 跨架构生成 |描述 |
+| benchmark |  粒度 | 代码行数 | 语言 | 正确性 | 性能 | 跨架构生成 |描述 |
 |------------|------|----------|--------|------------|------|--------|--|----|----------------|
-| ClassEval | Class-level| |  | 100个 | Python | ✅ | ❌ | ❌ |类级别的代码生成与评估benchmark | 
-| SWE-bench | Repo-level| |  | 300/500 | Python | ✅ | ❌ | ❌ |解决真实世界GitHub问题的仓库级benchmark | 
-| JavaBench | Repo-level | |  | 389 | Java | ✅ | ❌ | ❌ |专业级Java开发能力评估benchmark |
-| KernelBench | Repo-level | |  | 250 | CUDA | ✅ | ✅ | ❌ |高性能GPU内核生成能力评估benchmark |
-| ParEval |func-level| |  | 60 | CUDA、C++ | ✅ | ✅ | ❌ | 并行计算程序生成与正确性评估benchmark |
-| Swe-Perf |repo-level | |  | 140 | Python | ✅ | ✅ | ❌ | 软件仓库中的性能优化与瓶颈修复benchmark |
-| cisc-risc |func-level ||  | 164 | Assembly | ✅ | ❌ | ✅ | cisc-risc汇编代码转译benchmark | 
-| **QMD-Bench** | repo-level | |  |  | C++/Intrinsic | ✅ | ✅ | ✅ |高性能库跨架构迁移与性能优化benchmark | 
+| ClassEval | Class-level| 35 |  Python | ✅ | ❌ | ❌ |类级别的代码生成与评估benchmark | 
+| SWE-bench | Repo-level| 34 | Python | ✅ | ❌ | ❌ |解决真实世界GitHub问题的仓库级benchmark | 
+| JavaBench | Repo-level | 89 | Java | ✅ | ❌ | ❌ |专业级Java开发能力评估benchmark |
+| KernelBench | Repo-level | 38 | CUDA | ✅ | ✅ | ❌ |高性能GPU内核生成能力评估benchmark |
+| ParEval |func-level| 30 | CUDA、C++ | ✅ | ✅ | ❌ | 并行计算程序生成与正确性评估benchmark |
+| Swe-Perf |repo-level | 131 | Python | ✅ | ✅ | ❌ | 软件仓库中的性能优化与瓶颈修复benchmark |
+| cisc-risc |func-level |177 | Assembly | ✅ | ❌ | ✅ | cisc-risc汇编代码转译benchmark | 
+| **QMD-Bench** | repo-level | 753 | C++/Intrinsic | ✅ | ✅ | ✅ |高性能库跨架构迁移与性能优化benchmark | 
 
 
 
