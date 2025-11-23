@@ -2,8 +2,8 @@
 This benchmark evaluates both functional correctness and performance of high-performance library migration across architectures with agents, providing a comprehensive assessment of migration effectiveness and efficiency.
 
 
-| Granularity | Description | Code Lines | Dependencies | Dataset Size | Language | Correctness | Performance | Cross-Architecture Generation/Migration |
-|------------|------------|------------|-------------|--------------|---------|------------|------------|----------------------------------------|
+| Granularity | Description | Code Lines | Dependencies | Dataset Size | Language | Correctness | Performance | Cross-Architecture|
+|------------|------------------------------------|------------|-------------|--------------|---------|------------|------------|----------|
 | ClassEval | Class-level code generation and evaluation benchmark |  |  | 100 | Python | ✅ | ❌ | ❌ |
 | SWE-bench | Repository-level benchmark for solving real-world GitHub problems |  |  | 300/500 | Python | ✅ | ❌ | ❌ |
 | JavaBench | Professional-level Java development capability evaluation benchmark |  |  | 389 | Java | ✅ | ❌ | ❌ |
