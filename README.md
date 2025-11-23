@@ -277,12 +277,12 @@ Level 2 包含 14 个来自 OpenCV 官方 samples 的典型图像处理应用。
 | `separable_filter` | ✅ | ❌ | ❌ | ❌ |
 | `morph` | ❌ | ❌ | ❌ | ❌ |
 | `sobel` | ❌ | ❌ | ❌ | ❌ |
-| `absdiff` |  |  |  |  |
-| `add` |  |  |  |  |
-| `add_weighted` |  |  |  |  |
-| `cmp` |  |  |  |  |
-| `mul` |  |  |  |  |
-| `sub` |  |  |  |  |
+| `absdiff` | ❌ | ✅ | ❌ | ❌ |
+| `add` | ✅ | ✅ | ❌ | ❌ |
+| `add_weighted` | ❌ |  ❌| ❌ | ❌ |
+| `cmp` | ❌ | ❌ | ❌ | ❌ |
+| `mul` | ❌ | ❌ | ❌ |  ❌|
+| `sub` | ❌ |❌  | ❌ | ❌ |
 | `div` | ❌ | ❌ | ❌ | ❌ |
 | `colorconvert` | ❌ | ❌ | ❌ | ❌ |
 | `convolution` | ✅ | ❌ | ❌ | ❌ |
