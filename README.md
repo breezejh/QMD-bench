@@ -1,54 +1,27 @@
-# QMD-bench
+# QMD-Bench——Agent-Driven Cross-Architecture Migration Benchmark 
+# QMD-Bench——智能体驱动的跨架构代码迁移 Benchmark
 
-QMD-bench旨在评估Agent在高性能库跨架构迁移任务中的功能正确性与性能表现，全面衡量迁移的有效性与效率。
-
-QMD-bench包括
-
-
-
-| Granularity | Description                                                                                                     | Code Lines | Dependencies | Dataset Size | Language    | Correctness | Performance | Cross-Architecture |
-|------------|-----------------------------------------------------------------------------------------------------------------|------------|-------------|--------------|------------|------------|------------|----------------------------------------|
-| ClassEval  | Class-level code generation and evaluation benchmark                                                           |            |             | 100          | Python     | ✅          | ❌          | ❌                                      |
-| SWE-bench  | Repository-level benchmark for solving real-world GitHub problems                                              |            |             | 300/500      | Python     | ✅          | ❌          | ❌                                      |
-| JavaBench  | Professional-level Java development capability evaluation benchmark                                           |            |             | 389          | Java       | ✅          | ❌          | ❌                                      |
-| KernelBench| High-performance GPU kernel generation benchmark                                                               |            |             | 250          | CUDA       | ✅          | ✅          | ❌                                      |
-| ParEval    | Parallel computing program generation and correctness evaluation benchmark                                    |            |             | 60           | CUDA, C++  | ✅          | ✅          | ❌                                      |
-| Swe-Perf   | Performance optimization and bottleneck fixing benchmark in software repositories                               |            |             | 140          | Python     | ✅          | ✅          | ❌                                      |
-| cisc-risc  | CISC-RISC assembly code translation benchmark                                                                  |            |             | 164          | Assembly   | ✅          | ❌          | ✅                                      |
-| our        | High-performance library cross-architecture migration and optimization benchmark                               |            |             |              | C/C++      | ✅          | ✅          | ✅                                      |
-
-
-# 🚀 Agent-Driven OpenCV Cross-Architecture Migration Benchmark  
-# 智能体驱动的 OpenCV 跨架构代码迁移 Benchmark
-
-
-
----
 
 ## 📖 目录 (Table of Contents)
 
-- [OpenCV库级自动迁移评测集](#-项目介绍-introduction)
-- [NCNN库级自动迁移评测集](#-为什么需要这个-benchmark-background)
-- [OpenMP库级自动并行优化工具](#-迁移难点-key-challenges)
-- [FFmpeg库级自动迁移评测集](#-与其他-benchmark-的差异-comparison)
-- [测试集设计与难度分级 (Dataset & Hierarchy)](#-测试集设计与难度分级-dataset--hierarchy)
-- [测试题目 (Test Cases)](#-测试题目-test-cases)
-- [基准测试结果 (SoTA Results)](#-基准测试结果-sota-results)
-- [使用方法 (Getting Started)](#-使用方法-getting-started)
-- [引用 (Citation)](#-引用-citation)
+- [OpenCV库级自动迁移评测集](#opencv库级自动迁移评测集)
+- [NCNN库级自动迁移评测集](#ncnn库级自动迁移评测集)
+- [OpenMP库级自动并行优化工具](#openmp库级自动并行优化工具)
+- [FFmpeg库级自动迁移评测集](#ffmpeg库级自动迁移评测集)
+
 
 ---
 ## OpenCV库级自动迁移评测集
 
-### 📝 项目介绍 (Introduction)
+### 项目介绍 (Introduction)
 
-为了促进 RISC-V 基础软件生态繁荣，同时推动学术界和产业界利用智能体（AI Agents）进行跨架构代码迁移的探索，我们基于端侧性能极致优化的 **NCNN 推理框架**，构建了业界首个**智能体驱动的 NCNN 库跨架构迁移 Benchmark**。
+为推动 RISC-V 生态在计算机视觉领域的发展，并探索大模型智能体在跨架构代码迁移中的潜力，我们基于广泛使用的 OpenCV 视觉库，构建了首个 智能体驱动的 OpenCV 跨架构迁移 Benchmark。
 
-虽然目前已经有一些项目级代码 Benchmark 发布，但是这些 Benchmark 并不适用于跨不同硬件架构（特别是针对 SIMD 指令集）的代码迁移任务。本项目的目标是提供一个标准化的测试平台，评估大模型智能体将现有成熟架构（x86/ARM/MIPS/LoongArch）的向量化实现自动迁移到 RISC-V Vector (RVV) 架构的能力，并重点关注代码的正确性与性能优化。
+本 Benchmark 聚焦于将Opencv的 ARM NEON 向量化代码自动迁移至 RISC-V Vector (RVV) 架构，旨在评估智能体在保持功能正确性的同时，实现性能优化的能力，为自动化迁移工具提供标准化评估平台。
 
 ---
 
-### 💡 为什么需要这个 Benchmark？
+### 为什么需要这个Benchmark？
 
 #### 现状与痛点
 现有深度学习推理框架大多数并不原生支持 RISC-V 向量扩展后端。虽然仅有少数框架手动支持了部分算子的 RVV 后端，但往往存在相比标量实现**性能负优化**的算子，导致无法充分利用 RISC-V 处理器的向量扩展模块来加速模型推理。
@@ -56,7 +29,7 @@ QMD-bench包括
 对这些深度学习框架逐个手动支持 RISC-V 向量化需要耗费大量的人力和时间成本。因此，**亟需实现这些深度学习推理框架的自动化向量化支持，并切实提升模型推理速度。**
 
 #### 自动化迁移的价值
-自动化代码迁移在系统维护方面至关重要。由于系统在其生命周期中通常会经历多次迁移，自动化可以避免重复的手动工作。深度学习推理框架对 RISC-V 的向量化支持，本质上就是从现有成熟的 x86、ARM 等架构的向量化实现，跨架构迁移到 RISC-V 的过程。
+自动化代码迁移在系统维护方面至关重要。由于系统在其生命周期中通常会经历多次迁移，自动化可以避免重复的手动工作。深度学习推理框架对 RISC-V 的向量化支持，本质上就是从现有成熟的 ❌86、ARM 等架构的向量化实现，跨架构迁移到 RISC-V 的过程。
 
 #### 大模型智能体的机遇
 随着大模型参数规模的不断扩张，其在代码领域的性能取得了显著提升。近年来，大模型智能体在代码生成、补全、重构、修复、测试用例生成以及最近的代码迁移等软件工程任务中得到了广泛应用。
@@ -69,108 +42,107 @@ QMD-bench包括
 
 本项目面临的挑战不仅仅是指令集的翻译，更在于跨越**硬件架构范式**与**软件工程复杂度**的双重鸿沟。
 
-#### 1. 架构范式的根本性差异 (Architectural Paradigm Shift)
-* **固定 vs. 可变 (Fixed vs. Scalable)**: x86 AVX/SSE 依赖固定长度寄存器，代码中充斥着硬编码的步长（如 `i += 8`）。而 RISC-V RVV 采用硬件无关的向量长度 (VLEN)。迁移时必须将“定长循环”重构为基于 `vsetvli` 的 **Strip-mining 循环**。
-* **指令语义鸿沟**: 许多 x86 复杂指令（如 `_mm256_shuffle_ps`）在 RISC-V 中没有 1:1 的映射，需要组合 `vrgather`, `vmerge`, `vslide` 等多条基础指令才能等效实现，极其考验智能体的逻辑重组能力。
+#### 1. 硬件架构差异
 
-#### 2. 复杂的寄存器与内存管理 (Resource Management)
-* **LMUL 的动态权衡**: RVV 独有的 **LMUL (Logic Vector Length Multiplier)** 机制要求智能体根据算子计算密度，动态推断最优的寄存器分组策略，以平衡指令吞吐量与寄存器溢出风险。
-* **NCNN 特有的数据打包**: NCNN 强制采用了 `elempack` 数据布局。智能体必须具备**“布局感知 (Layout-Aware)”**能力，正确处理非标准布局下的 Load/Store 及边界对齐，否则极易引发段错误。
+**固定向量长度 vs 可扩展向量架构**
 
-#### 3. 项目级依赖导致的“上下文幻觉” (Project-Level Hallucination)
-这是从 Demo 走向真实工程最大的拦路虎。
-* **隐形依赖链 (Implicit Dependency Chains)**:
-    * 真实算子实现并非孤立存在，往往依赖分散在 `headers/`、`utils/` 中的宏定义、结构体声明及辅助函数。
-    * **难点**: 智能体如果只关注当前源文件，会因缺失类型定义而**“臆造” (Hallucinate)** 出不存在的 API 或错误的函数签名；若引入过多无关文件，又会因 Context Window 噪声导致注意力分散。
-* **预处理器的“迷雾” (Macro Obfuscation)**:
-    * NCNN 大量使用 C 预处理器（Macros）来生成模板代码（如 `DEFINE_LAYER_CREATOR`）。
-    * **难点**: 这种元编程手段掩盖了真实的控制流。智能体难以像编译器一样精准展开宏，极易在理解代码逻辑时产生误判，导致生成的迁移代码引用了错误的符号或逻辑分支。
+ARM NEON：基于128-bit固定长度向量寄存器，代码中大量硬编码的循环步长（如 `i += 4`）。
+RISC-V RVV：采用硬件无关的向量长度(VLEN)，必须将定长循环重构为基于 `vsetvli` 的 Strip-mining 循环。
+**迁移挑战**：智能体需要理解从"定长向量化"到"变长向量化"的算法级重构。
 
-> **总结**: 本 Benchmark 要求智能体具备**全栈能力**：向下要精通 RVV 汇编与微架构特性，向上要能解析复杂的 C++ 工程依赖关系，准确管理上下文以抑制幻觉。
+**指令集语义鸿沟**
 
----
+ARM NEON：丰富的向量指令集，如 `vmlaq`（乘加累加）、`vqmovn`（饱和窄化）。
+RISC-V RVV：缺乏直接等效指令，需组合多条基础指令实现复杂指令。
+**迁移挑战**：智能体需具备指令语义理解能力，进行跨架构的指令重组
 
-### ⚖️ 与其他库及 Benchmark 的差异 (Comparison)
+**寄存器机制差异**
 
-> *本章节深入剖析本 Benchmark 与高性能视觉库（OpenCV）及现有代码生成数据集（如 SWE-bench, HumanEval）的本质区别。*
+ARM NEON：向量寄存器与通用寄存器分离，向量指令需显式指定向量寄存器。
+RISC-V RVV：向量寄存器与通用寄存器统一，向量指令需显式指定向量长度。
+**迁移挑战**：智能体需理解寄存器机制差异，进行寄存器分配与指令重排。
 
-#### 1. 与 OpenCV 的核心差异 (vs. OpenCV)
+#### 2. 软件工程复杂度
 
-虽然 NCNN 和 OpenCV 同为计算机视觉领域的 C++ 库，但两者的**优化哲学**与**迁移难度**存在维度级的差异。
+**OpenCV 模块化依赖的广度挑战**
 
-##### 🚩 1.1 优化哲学的根本分歧 (Optimization Philosophy)
-* **OpenCV (通用主义 / Generality)**
-    * **目标**: 覆盖广泛的视觉场景，保持 API 稳定。
-    * **特征**: 标准化数据格式 (HWC/CHW)，易于互操作；算子相对独立；向量化仅集中在热点区域。
-* **NCNN (极致主义 / Extremism)**
-    * **目标**: 榨干端侧推理的**每一个时钟周期**，追求极限性能。
-    * **特征**: 激进的内存布局 (`elempack`) 牺牲通用性换取连续访问；手工优化的汇编 Intrinsics 占比极高。
+```te❌t
+   算子实现    →          模块接口              →          硬件抽象层(HAL)
+      ↓                      ↓                                   ↓
+  dot_product    hal/riscv-rvv/include/core.hpp  modules/core/src/hal_replacement.hpp
+```
 
-##### 🧩 1.2 算子语义的复杂度鸿沟 (Complexity Gap)
+- 单个算子迁移可能涉及多个不同模块的接口理解
+    
+- **迁移挑战**：智能体需要在大规模代码库中准确追踪跨模块依赖关系
 
-| 维度 | NCNN 深度学习算子 | OpenCV 传统算子 |
-| :--- | :--- | :--- |
-| **计算密度** | **极高** (如 Winograd 卷积，单算子数千行代码) | **中低** (多数为简单像素操作) |
-| **数据依赖** | **复杂** (多层循环嵌套，Tiling 策略) | **简单** (多为逐像素/邻域操作) |
-| **精度要求** | 需处理 `int8`/`fp16` 量化细节 | 通常 `float32`/`uint8` 即可 |
+**OpenCV 硬件抽象层(HAL)的复杂性**
+    
+- 同一功能在 HAL 层可能有多个后端实现：NEON、OpenCL、CUDA、纯C++等
+        
+- 智能体需要识别并专注于特定硬件后端的迁移，避免混淆不同实现
+        
+- **迁移挑战**：准确理解硬件抽象边界，避免跨抽象层的错误迁移
 
-> **迁移挑战**: NCNN 要求智能体深刻理解算法的数学本质（如卷积的 Winograd 变换），才能将其正确映射到 RVV 的向量化策略中；而 OpenCV 的挑战主要在于算子数量庞大。
+**宏定义与模板的深度使用**
 
-##### 📦 1.3 独特的数据布局陷阱 (Layout Pitfalls)
+- OpenCV 代码中广泛使用宏定义与模板，增加了代码理解和迁移的难度
 
-* **NCNN 的 `elempack` 机制**:
-    ```cpp
-    // input shape: [batch, channels, height, width]
-    // elempack=4 时, 实际存储变为: [batch, channels/4, height, width, 4]
-    ```
-    智能体必须识别代码中**隐式假设**的打包粒度 (4/8/16)，Load/Store 指令必须严格匹配 `vl` 步长，否则会导致**错位访问**。
-* **OpenCV 的标准布局**:
-    采用标准的 `[rows * cols * channels]` 连续存储，访问模式更符合常规思维。
+- **迁移挑战**：智能体需要理解并正确处理宏定义与模板，避免代码混淆与错误
 
-##### 🕸️ 1.4 工程依赖的“深度陷阱” (Dependency Depth)
-* **NCNN (垂直深度高)**: `算子` → `Layer 基类` → `Allocator` → `Option` → `CPU 特性检测`。依赖链虽窄但深，智能体极易在逐层追踪中迷失上下文。
-* **OpenCV (水平广度大)**: `Core` ← `HAL` ← `ImgProc` ← `Parallel_for`。模块间耦合低，但涉及算子总数庞大，面临“上下文爆炸”问题。
+**大型开源库结构复杂**
+- OpenCV 是一个大型开源库，包含多个模块和子项目，每个模块都有其特定的依赖和实现方式。除此之外，OpenCV多年来由多人协作开发，代码库的写作风格和规范存在很大差异，这使Agent在理解和迁移代码时面临巨大挑战。
 
-##### 🧠 1.5 智能体能力需求矩阵 (Capability Matrix)
+#### 3.上下文依赖与幻觉风险
 
-| 能力维度 | NCNN 迁移 | OpenCV 迁移 |
-| :--- | :---: | :---: |
-| **算法理解** | ⭐⭐⭐⭐⭐ (需懂深度学习) | ⭐⭐⭐ (传统 CV 知识) |
-| **架构映射** | ⭐⭐⭐⭐⭐ (RVV 特性深度利用) | ⭐⭐⭐⭐ (基础 SIMD 即可) |
-| **上下文管理** | ⭐⭐⭐⭐⭐ (深度依赖链) | ⭐⭐⭐⭐⭐ (广度模块交互) |
-| **宏编程解析** | ⭐⭐⭐⭐⭐ (重度依赖) | ⭐⭐⭐ (相对克制) |
+**隐式依赖链的识别**
 
-> **总结**: OpenCV 迁移是 **“广度优先搜索”**，而 NCNN 迁移是 **“深度优先探索”**。本 Benchmark 通过 NCNN，定向爆破智能体在复杂工程迁移场景下的**深度思考**能力。
+- 算子实现依赖分散在多个头文件中的类型定义（如 `cv::Size`、`cv::Point`）
+        
+- 平台特定宏（`CV_NEON`、`CV_SIMD128`）的条件编译逻辑
+        
+- **迁移挑战**：智能体容易因缺失上下文而"臆造"不存在的API或错误类型
+        
+**工程配置与构建系统的理解**
+- OpenCV 的构建系统复杂，涉及多个编译选项（如 `WITH_OPENCL`、`WITH_CUDA`）
+
+- **迁移挑战**：智能体需要理解并正确配置构建系统，避免编译错误
 
 ---
 
-#### 2. 与通用代码 Benchmark 的对比 (vs. Related Benchmarks)
+### 与目前代码 Benchmark 的对比 (vs. Related Benchmarks)
 
-本 Benchmark 填补了现有代码评测数据集在 **跨架构迁移 (Cross-Architecture)** 与 **极致性能优化 (Performance-Critical)** 交叉领域的空白。
+本 Benchmark 填补了现有代码评测数据集在 **跨架构迁移 (Cross-Architecture)** 与 **性能优化 (Performance-Optimization)** 交叉领域的空白。
 
 ##### 📊 综合对比表 (Comparison Table)
 
-| Benchmark | 粒度 (Granularity) | 语言 (Language) | 关注正确性 (Correctness) | 关注性能 (Perf) | 跨架构 (Cross-Arch) | 核心任务 (Task Focus) |
-| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
-| **ClassEval** | Class-level | Python | ✅ | ❌ | ❌ | 类级别的代码生成 |
-| **SWE-bench** | Repo-level | Python | ✅ | ❌ | ❌ | 解决真实 GitHub Issue |
-| **JavaBench** | Repo-level | Java | ✅ | ❌ | ❌ | 专业 Java 开发能力 |
-| **KernelBench** | Repo-level | CUDA | ✅ | ✅ | ❌ | 高性能 GPU 内核生成 |
-| **ParEval** | Func-level | CUDA/C++ | ✅ | ✅ | ❌ | 并行计算程序生成 |
-| **Swe-Perf** | Repo-level | Python | ✅ | ✅ | ❌ | 仓库级性能瓶颈修复 |
-| **CISC-RISC** | Func-level | Assembly | ✅ | ❌ | ✅ | 汇编代码转译 |
-| **Agent-NCNN (Ours)** | **Repo-level** | **C++ / Intrinsic** | **✅** | **✅** | **✅** | **跨架构算子迁移与优化** |
+| benchmark |  粒度 | 代码行数 | 依赖数 | 数据集规模 | 语言 | 正确性 | 性能 | 跨架构生成 |描述 |
+|------------|------|----------|--------|------------|------|--------|--|----|----------------|
+| ClassEval | Class-level| |  | 100个 | Python | ✅ | ❌ | ❌ |类级别的代码生成与评估benchmark | 
+| SWE-bench | Repo-level| |  | 300/500 | Python | ✅ | ❌ | ❌ |解决真实世界GitHub问题的仓库级benchmark | 
+| JavaBench | Repo-level | |  | 389 | Java | ✅ | ❌ | ❌ |专业级Java开发能力评估benchmark |
+| KernelBench | Repo-level | |  | 250 | CUDA | ✅ | ✅ | ❌ |高性能GPU内核生成能力评估benchmark |
+| ParEval |func-level| |  | 60 | CUDA、C++ | ✅ | ✅ | ❌ | 并行计算程序生成与正确性评估benchmark |
+| Swe-Perf |repo-level | |  | 140 | Python | ✅ | ✅ | ❌ | 软件仓库中的性能优化与瓶颈修复benchmark |
+| cisc-risc |func-level ||  | 164 | Assembly | ✅ | ❌ | ✅ | cisc-risc汇编代码转译benchmark | 
+| **QMD-Bench** | repo-level | |  |  | C++/Intrinsic | ✅ | ✅ | ✅ |高性能库跨架构迁移与性能优化benchmark | 
 
-##### 🚀 核心差异分析 (Key Differentiators)
 
-1.  **比通用代码生成更“硬核”**:
-    相比 SWE-bench 等关注逻辑正确性的 Benchmark，Agent-NCNN 引入了**“性能约束”**，要求生成的 RVV 代码在性能上超越标量实现。
 
-2.  **比高性能计算库更“复杂”**:
-    相比 KernelBench 的独立 Kernel 生成，Agent-NCNN 处于 **Repo-level**。迁移过程无法脱离 `ncnn/layer.h` 等项目上下文，迫使智能体处理**跨文件依赖**与**宏定义迷雾**。
+##### 核心差异分析 (Key Differentiators)
 
-3.  **比单纯汇编转译更“工程化”**:
-    相比 CISC-RISC 的指令互译，Agent-NCNN 是从 **x86 Intrinsic (C++)** 到 **RVV Intrinsic (C++)** 的迁移，涉及从**定长向量**到**变长向量 (VLEN)** 的算法级重构。
+
+
+- **ClassEval、JavaBench、SWE-bench** 等主要关注算法逻辑正确性，缺乏对性能的考量
+    
+- **Swe-Perf** 虽然涉及性能优化，但局限于算法层面优化，缺乏架构维度优化的考量
+  
+- **KernelBench** 专注于 GPU 并行计算，但缺乏跨架构迁移维度，且缺乏工程实践性考量
+- **cisc-risc** 涉及架构迁移，主要关注汇编代码转译，但只是简单的函数级转译
+- **ParEval** 专注于并行计算，但仅关注简单的函数级并行代码的正确性评估
+    
+- **QMD-Bench** 在库级迁移的同时，全面保证功能正确性、性能优化和跨架构迁移，更贴近工业级迁移需求。
+    
 
 ---
 
@@ -181,10 +153,10 @@ QMD-bench包括
 #### 1. 测试层级设计 (Test Levels)
 
 ##### 🟢 Level 1: 算子级测试 (Operator Level)
-这是 Benchmark 的基石，关注单个算子从 x86/ARM 到 RISC-V RVV 的迁移质量。
+这是 Benchmark 的基石，关注单个算子从 ❌86/ARM 到 RISC-V RVV 的迁移质量。
 * **功能正确性测试 (Unit Testing)**:
     * 对迁移后的算子进行严格的单元测试。
-    * **标准**: 必须通过人类手动编写的测试用例 (Test Cases)，输出结果需与标量实现按位一致 (Bit-exact match) 或误差在容许范围内。
+    * **标准**: 必须通过人类手动编写的测试用例 (Test Cases)，输出结果需与标量实现按位一致 (Bit-e❌act match) 或误差在容许范围内。
 * **性能基准测试 (Performance Benchmarking)**:
     * 对比评估迁移后的 RVV 算子性能。
     * **基线 (Baseline)**: RISC-V 标量实现 (Scalar Implementation)。
@@ -212,7 +184,7 @@ QMD-bench包括
 #### 🧩 算子级难度 (Operator Difficulty)
 基于**软件逻辑**与**硬件特性**的双重维度进行分级。
 * **依据**: 算子的代码行数、控制流复杂度 (Software) 以及指令吞吐、向量化难度 (Hardware)，参考文档 [算子难度划分依据](design/intro_ops_dim.md)。
-* **数据**: 详细分级请参阅 [算子难度划分表](design/operator_difficulty_matrix.csv)。
+* **数据**: 详细分级请参阅 [算子难度划分表](design/operator_difficulty_matri❌.csv)。
 
 ---
 
@@ -230,7 +202,7 @@ QMD-bench包括
     * `Convolution1D` (一维卷积), `DepthwiseConvolution` (深度可分离卷积)
     * `LSTM` (长短期记忆单元), `InnerProduct` (全连接)
 * **结构与数据处理 (Structure & Data)**:
-    * `Pooling` (池化), `Softmax` (归一化指数)
+    * `Pooling` (池化), `Softma❌` (归一化指数)
     * `Concat` (多输入拼接，含通道特化变体), `Eltwise` (逐元素加/乘/最大)
 
 #### 2. 模型级题目 (Model Cases)
@@ -240,7 +212,7 @@ QMD-bench包括
 主要用于测试 Agent 在无算子重叠的实战场景下的底层算子迁移能力。
 * **目标检测 (Detection)**: `MobileNetSSD`, `NanoDet` (轻量级), `MobileNetV2/V3 SSDLite`, `SqueezeNetSSD`, `PeleeNet SSD`
 * **图像分类 (Classification)**: `SqueezeNet` (Fire module), `ShuffleNetV2` (Channel Shuffle), `YOLOv8/v11-Cls`
-* **OCR 与文本 (OCR & Text)**: `PP-OCRv3`, `PP-OCRv4` (检测与识别流水线)
+* **OCR 与文本 (OCR & Te❌t)**: `PP-OCRv3`, `PP-OCRv4` (检测与识别流水线)
 * **特定任务 (Specialized Tasks)**:
     * `SimplePose` (姿态估计)
     * `RVM` (实时视频抠图)
@@ -249,7 +221,7 @@ QMD-bench包括
 
 ##### Level 2：复杂应用场景 (24 个模型)
 侧重于测试 Agent 在完整模型场景下处理多样化算子集合与复杂数据流的能力。
-* **YOLO 全系列 (YOLO Series)**: 覆盖 `YOLOv2` 至 `YOLOv11` 的经典与最新版本，包含 `YOLOX`, `YOLOv8-World` (开放词汇检测) 以及 `OBB` (旋转框)、`Pose` (姿态)、`Seg` (分割) 等变体。
+* **YOLO 全系列 (YOLO Series)**: 覆盖 `YOLOv2` 至 `YOLOv11` 的经典与最新版本，包含 `YOLO❌`, `YOLOv8-World` (开放词汇检测) 以及 `OBB` (旋转框)、`Pose` (姿态)、`Seg` (分割) 等变体。
 * **高级检测与分割 (Advanced Detection & Segmentation)**:
     * `Faster R-CNN` (两阶段检测, RPN)
     * `YOLACT` (实时实例分割)
@@ -270,7 +242,7 @@ QMD-bench包括
 为了深入分析智能体在不同类型算子上的表现，我们提供了核心算子的逐项评测结果，详细文件见 [算子级评测数据](design/sota_llm_result.csv)。
 
 <details>
-<summary>🔻 点击查看详细算子通过率 (Click to expand)</summary>
+<summary>🔻 点击查看详细算子通过率 (Click to e❌pand)</summary>
 
 | Operator | Joy(DS-V3) | Joy(GPT-4o) | OH(Claude 4.5) | OH(Gemini 3) | Trae(DS-V3) |
 |:---|:---:|:---:|:---:|:---:|:---:|
@@ -286,7 +258,7 @@ QMD-bench包括
 | `innerproduct`| 0% | 0% | - | - | - |
 | `tanh` | 0% | - | - | - | - |
 | `conv1d` | 0% | - | - | - | - |
-| `softmax` | - | - | 0% | 0% | 12% |
+| `softma❌` | - | - | 0% | 0% | 12% |
 | `lstm` | - | - | 0% | 0% | 0% |
 | `gelu` | - | - | - | - | **100%** |
 | `convolution` | - | - | 0% | 0% | - |
@@ -305,21 +277,30 @@ git clone [https://github.com/YourOrg/Agent-NCNN-Benchmark.git](https://github.c
 
 # 2. Install dependencies
 
-pip install -r requirements.txt
+pip install -r requirements.t❌t
 
 
 
 # 3. Run the benchmark
 python run_benchmark.py --target riscv --model gpt-4
   --test_level operator
-
+```
 ---
-
-## OpenCV库级自动迁移评测集
 
 
 ## NCNN库级自动迁移评测集
 
+为了促进 RISC-V 基础软件生态繁荣，同时推动学术界和产业界利用智能体（AI Agents）进行跨架构代码迁移的探索，我们基于端侧性能极致优化的 NCNN 推理框架，构建了业界首个智能体驱动的 NCNN 库跨架构迁移 Benchmark。
+
+具体github地址为：[https://github.com/k1366191024/agent-ncnn-benchmark/tree/main](https://github.com/k1366191024/agent-ncnn-benchmark/tree/main)
+
+
 ## OpenMP库级自动并行优化工具
 
+RepoOMP 是一个用于自动化 OpenMP 代码分析和优化的综合框架。它采用三个专门的智能体按顺序工作，以分析依赖关系、测量性能并自动向 C/C++ 代码添加 OpenMP 原语。
+
+具体github地址为：[https://github.com/Qlalq/RepoOMP](https://github.com/Qlalq/RepoOMP)
+
 ## FFmpeg库级自动迁移评测集
+
+FFmpeg等其他开源高性能库的自动迁移评测集我们正在接入中，敬请期待。
