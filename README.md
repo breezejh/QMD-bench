@@ -2,6 +2,8 @@
 # QMD-Bench——智能体驱动的跨架构代码迁移 Benchmark
 
 
+![SOTA大模型智能体在QMD-Bench OpenCV算子测试中的正确情况统计](./doc/评估结果.png)
+
 ## 📖 目录 (Table of Contents)
 
 - [OpenCV库级自动迁移评测集](#opencv库级自动迁移评测集)
@@ -118,16 +120,16 @@ RISC-V RVV：向量寄存器与通用寄存器统一，向量指令需显式指�
 
 ##### 📊 综合对比表 (Comparison Table)
 
-| benchmark |  粒度 | 代码行数 | 语言 | 正确性 | 性能 | 跨架构生成 |描述 |
+| benchmark |  粒度 | 平均输出行数 | 语言 | 正确性 | 性能 | 跨架构生成 |描述 |
 |------------|------|------------|------|--------|--|----|----------------|
-| ClassEval | Class-level| 35 |  Python | ✅ | ❌ | ❌ |类级别的代码生成与评估benchmark | 
-| SWE-bench | Repo-level| 34 | Python | ✅ | ❌ | ❌ |解决真实世界GitHub问题的仓库级benchmark | 
-| JavaBench | Repo-level | 89 | Java | ✅ | ❌ | ❌ |专业级Java开发能力评估benchmark |
-| KernelBench | Repo-level | 38 | CUDA | ✅ | ✅ | ❌ |高性能GPU内核生成能力评估benchmark |
-| ParEval |func-level| 30 | CUDA、C++ | ✅ | ✅ | ❌ | 并行计算程序生成与正确性评估benchmark |
-| Swe-Perf |repo-level | 131 | Python | ✅ | ✅ | ❌ | 软件仓库中的性能优化与瓶颈修复benchmark |
-| cisc-risc |func-level |177 | Assembly | ✅ | ❌ | ✅ | cisc-risc汇编代码转译benchmark | 
-| **QMD-Bench** | repo-level | 753 | C++/Intrinsic | ✅ | ✅ | ✅ |高性能库跨架构迁移与性能优化benchmark | 
+| ClassEval | Class-level| <50行 |  Python | ✅ | ❌ | ❌ |类级别的代码生成与评估benchmark | 
+| SWE-bench | Repo-level| <50行 | Python | ✅ | ❌ | ❌ |解决真实世界GitHub问题的仓库级benchmark | 
+| JavaBench | Repo-level | <100行 | Java | ✅ | ❌ | ❌ |专业级Java开发能力评估benchmark |
+| KernelBench | Repo-level | <50行 | CUDA | ✅ | ✅ | ❌ |高性能GPU内核生成能力评估benchmark |
+| ParEval |func-level| <50行 | CUDA、C++ | ✅ | ✅ | ❌ | 并行计算程序生成与正确性评估benchmark |
+| Swe-Perf |repo-level | ~百行 | Python | ✅ | ✅ | ❌ | 软件仓库中的性能优化与瓶颈修复benchmark |
+| cisc-risc |func-level |<200行 | Assembly | ✅ | ❌ | ✅ | cisc-risc汇编代码转译benchmark | 
+| **QMD-Bench** | repo-level | ~千行 | C++/Intrinsic | ✅ | ✅ | ✅ |高性能库跨架构迁移与性能优化benchmark | 
 
 
 
@@ -263,8 +265,7 @@ Level 2 包含 14 个来自 OpenCV 官方 samples 的典型图像处理应用。
 
 为了深入分析智能体在不同类型算子上的表现，我们提供了核心算子的逐项评测结果。
 
-<details>
-<summary>🔻 点击查看OpenHands详细算子通过情况 (Click to expand)</summary>
+**OpenHands详细算子通过情况**
 
 | Operator | OpenHands(GPT-5) | OpenHands(gemini-3-pro-preview) | OpenHands(qwen3-coder-480b-a35b-instruct) | OpenHands(gpt-4o)|
 |:---|:---:|:---:|:---:|:---:|
@@ -290,10 +291,8 @@ Level 2 包含 14 个来自 OpenCV 官方 samples 的典型图像处理应用。
 | `pyramid` | ❌ | ❌ | ❌ | ❌ |
 | `gaussian_blur` | ❌ | ❌ | ❌ | ❌ |
 
-</details>
 
-<details>
-<summary>🔻 点击查看JoyCode详细算子通过情况 (Click to expand)</summary>
+**JoyCode详细算子通过情况**
 
 | Operator | JoyCode(claude-sonnet-4-5-20250929) | JoyCode(gemini-3-pro-preview) | JoyCode(Kimi-K2-0905) |
 |:---|:---:|:---:|:---:|
@@ -319,10 +318,8 @@ Level 2 包含 14 个来自 OpenCV 官方 samples 的典型图像处理应用。
 | `pyramid` | ❌ | ❌ | ❌ |
 | `gaussian_blur` | ❌ | ❌ | ❌ |
 
-</details>
 
-<details>
-<summary>🔻 点击查看TRAE详细算子通过情况 (Click to expand)</summary>
+TRAE详细算子通过情况
 
 | Operator | TRAE(Doubao-seed-code) | TRAE(deepseek-v3.1) | TRAE(GLM-4.6) |
 |:---|:---:|:---:|:---:|
@@ -348,7 +345,6 @@ Level 2 包含 14 个来自 OpenCV 官方 samples 的典型图像处理应用。
 | `pyramid` | ❌ | ❌ | ❌ |
 | `gaussian_blur` | ❌ | ❌ | ❌ |
 
-</details>
 
 ---
 
