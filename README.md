@@ -377,7 +377,7 @@ python run_benchmark.py --target riscv --model gpt-4
 
 RepoOMP 是一个用于自动化 OpenMP 代码分析和优化的综合框架。它采用三个专门的智能体按顺序工作，以分析依赖关系、测量性能并自动向 C/C++ 代码添加 OpenMP 原语。
 
-具体github地址为：[https://github.com/Qlalq/RepoOMP](https://github.com/Qlalq/RepoOMP)
+具体工具我们正在接入中，敬请期待。
 
 ## FFmpeg库级自动迁移评测集
 
